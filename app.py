@@ -4,9 +4,10 @@ from datetime import datetime
 import plotly.express as px
 
 # Load the data
+path = "./data"
 @st.cache_data
 def load_data():
-    return pd.read_csv('daily_data_2023-10-12.csv', parse_dates=['date'])
+    return pd.read_csv(path+'/daily_data_2023-10-12.csv', parse_dates=['date'])
 
 data = load_data()
 data['month_year'] = data['date'].dt.strftime('%m-%Y')
@@ -15,7 +16,7 @@ data['month_year'] = data['date'].dt.strftime('%m-%Y')
 # Load the data
 @st.cache_data
 def load_data():
-    return pd.read_csv('total_profiles_2023-10-12.csv')
+    return pd.read_csv(path+'/total_profiles_2023-10-12.csv')
 
 total_data = load_data()
 # 
