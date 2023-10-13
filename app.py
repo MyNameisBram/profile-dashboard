@@ -93,7 +93,7 @@ fig = px.line(monthly_data, x='month_year', y=['profile_id', 'rolling_avg'],
 
 # # Update the color of the rolling average to red
 fig.data[1].line.color = 'red'
-fig.update_layout(xaxis_title="Year", yaxis_title="Profiles", height=350 )
+fig.update_layout(xaxis_title="Year", yaxis_title="Profiles", height=325 )
 st.plotly_chart(fig)
 
 ### --- selected year data and charts --- ###
@@ -106,13 +106,13 @@ col7, col8 = st.columns(2)
 with col7:
     st.subheader(f"Total Unique Profiles: {selected_year}")
     formatted_total_unique_profiles = f"{total_unique_profiles_year:,}"
-    st.markdown(f"<div style='font-size: 30px; text-align: left; color: black;'>{formatted_total_unique_profiles}</div>", unsafe_allow_html=True)
+    st.markdown(f"<div style='font-size: 30px; text-align: left; color: green;'>{formatted_total_unique_profiles}</div>", unsafe_allow_html=True)
     #st.markdown(f"**{formatted_total_unique_profiles}**", unsafe_allow_html=True)
 
 with col8:
     st.subheader(f"Month: {selected_month_str}")
     formatted_total_unique_profiles = f"{total_unique_profiles_month:,}"
-    st.markdown(f"<div style='font-size: 30px; text-align: left; color: black;'>{formatted_total_unique_profiles}</div>", unsafe_allow_html=True)
+    st.markdown(f"<div style='font-size: 30px; text-align: left; color: blue;'>{formatted_total_unique_profiles}</div>", unsafe_allow_html=True)
     #st.markdown(f"**{formatted_total_unique_profiles}**", unsafe_allow_html=True)
 
 
@@ -133,7 +133,7 @@ fig_yearly = px.line(yearly_data, x='date', y=['profile_id', 'rolling_avg'],
 # Update the color of the rolling average to red
 fig_yearly.data[1].line.color = 'red'
 
-fig_yearly.update_layout(xaxis_title="Month", yaxis_title="Profiles")
+fig_yearly.update_layout(xaxis_title="Month", yaxis_title="Profiles", height=300)
 st.plotly_chart(fig_yearly)
 
 
@@ -149,7 +149,7 @@ fig_daily = px.line(daily_data, x='date', y=['profile_id', 'rolling_avg'],
         
 # Update the color of the rolling average to red
 fig_daily.data[1].line.color = 'red'
-fig_daily.update_layout(xaxis_title="Day", yaxis_title="Profiles" )
+fig_daily.update_layout(xaxis_title="Day", yaxis_title="Profiles", height=300 )
 st.plotly_chart(fig_daily)
 
 
