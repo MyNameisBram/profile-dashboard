@@ -164,7 +164,7 @@ if selected_level == "level 1":
         st.plotly_chart(fig_daily)
 
     # level 2
-    if selected_level == "level 2":
+    elif selected_level == "level 2":
 
         file_name = "level_2"
         st.sidebar.markdown("""
