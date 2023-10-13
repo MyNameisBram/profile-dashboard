@@ -8,7 +8,7 @@ import plotly.express as px
 # Sidebar for filtering
 st.sidebar.header("Filter Data")
 # select level data
-selected_level = st.sidebar.selectbox("Select Level", ["level 1", "level 2"])
+selected_level = st.sidebar.selectbox("Select Level", ["level_1", "level_2"])
 
 # pull data 
 path = "./data"
