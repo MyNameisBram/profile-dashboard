@@ -8,17 +8,13 @@ import plotly.express as px
 # Sidebar for filtering
 st.sidebar.header("Filter Data")
 # select level data
-selected_level = st.sidebar.selectbox("Select Level", ["Level 1", "Level 2"])
-if selected_level == "Level 1":
-    file_name = "level_1"
-else:
-    file_name = "level_2"
+selected_level = st.sidebar.selectbox("Select Level", ["level 1", "level 2"])
 
 # pull data 
 path = "./data"
 @st.cache_data
 def load_data():
-    return pd.read_csv(f'{path}/{file_name}_daily.csv', parse_dates=['date'])
+    return pd.read_csv(f'{path}/{selected_level}_daily.csv', parse_dates=['date'])
 
 data = load_data()
 data['month_year'] = data['date'].dt.strftime('%m-%Y')
@@ -27,7 +23,7 @@ data['month_year'] = data['date'].dt.strftime('%m-%Y')
 # Load the data
 @st.cache_data
 def load_data():
-    return pd.read_csv(f'{path}/{file_name}_total.csv')
+    return pd.read_csv(f'{path}/{selected_level}_total.csv')
 
 total_data = load_data()
 
