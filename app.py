@@ -4,10 +4,21 @@ from datetime import datetime
 import plotly.express as px
 
 # Load the data
+
+# Sidebar for filtering
+st.sidebar.header("Filter Data")
+# select level data
+selected_level = st.sidebar.selectbox("Select Level", ["Level 1", "Level 2"])
+if selected_level == "Level 1":
+    file_name = "level_1"
+else:
+    file_name = "level_2"
+
+# pull data 
 path = "./data"
 @st.cache_data
 def load_data():
-    return pd.read_csv(path+'/daily_data_2023-10-12.csv', parse_dates=['date'])
+    return pd.read_csv(f'{path}/{file_name}_daily.csv', parse_dates=['date'])
 
 data = load_data()
 data['month_year'] = data['date'].dt.strftime('%m-%Y')
@@ -16,16 +27,19 @@ data['month_year'] = data['date'].dt.strftime('%m-%Y')
 # Load the data
 @st.cache_data
 def load_data():
-    return pd.read_csv(path+'/total_profiles_2023-10-12.csv')
+    return pd.read_csv(f'{path}/{file_name}_total.csv')
 
 total_data = load_data()
+
+
+
 # 
 total_profiles = total_data['total_profiles'].values[0]
 monthly_avg = total_data['monthly_avg'].values[0]
 annual_growth_YOY = total_data['annual_growth_YOY'].values[0]
 
-# Sidebar for filtering
-st.sidebar.header("Filter Data")
+
+
 selected_year = st.sidebar.selectbox("Select Year", sorted(list(data['date'].dt.year.unique()), reverse=True))
 # list of months
 months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October','November','December']
