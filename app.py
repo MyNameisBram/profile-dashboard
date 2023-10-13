@@ -31,19 +31,19 @@ if selected_level == "": # default to level 1
     data = load_data_daily_1()
     total_data = load_data_total_1()
     message = """
-    First pass in cleaning out profiles data. Level 1: low level de-plucation of linkedin_url and email.
+    First pass in cleaning out profile data. Level 1: low-level deduplication of linkedin_url and email.
     """
 if selected_level == "level 1":
     data = load_data_daily_1()
     total_data = load_data_total_1()
     message = """
-    First pass in cleaning out profiles data. Level 1: low level de-plucation of linkedin_url and email.
+    First pass in cleaning out profile data. Level 1: low-level deduplication of linkedin_url and email.
     """
 if selected_level == "level 2":
     data = load_data_daily_2()
     total_data = load_data_total_2()
     message = """
-    Level 2, a more in-depth cleaning of profiles. higher level de-duplication of linkedin_url, handling supsicious emails, 
+    Level 2, a more in-depth cleaning of profiles. higher-level deduplication of linkedin_url, handling suspicious emails, 
     no name, same name, and other anomalies.
     """
 
@@ -61,7 +61,7 @@ annual_growth_YOY = total_data['annual_growth_YOY'].values[0]
 st.sidebar.header("Filter Data")
 selected_year = st.sidebar.selectbox("Select Year", sorted(list(data['date'].dt.year.unique()), reverse=True))
 # list of months
-months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October','November','December']
+months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
 
 selected_month_str = st.sidebar.selectbox("Select Month", months, index=0)
