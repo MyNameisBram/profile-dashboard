@@ -46,6 +46,9 @@ total_unique_profiles_month = filtered_data_month['profile_id'].sum() # monthly 
 
 # Display KPIs on Streamlit with a prettier layout
 st.title("Unique Profiles Data")
+st.markdown("""
+**Count of unique profiles/people we have in our database**
+""")
 
 # Create columns for KPIs
 col1, col2, col3 = st.columns([2,1,1])
@@ -71,7 +74,7 @@ with col3:
 
 # add markdown
 st.markdown("""
-profiles without duplicated linkedin urls, emails, and root_profile_ids
+Profiles without duplicated linkedin urls, emails, and root_profile_ids
 """)
 
 # chart 1
