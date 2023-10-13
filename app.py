@@ -30,14 +30,22 @@ if selected_level == "": # default to level 1
     selected_level = "level 1"
     data = load_data_daily_1()
     total_data = load_data_total_1()
-
+    message = """
+    First pass in cleaning out profiles data. Level 1: low level de-plucation of linkedin_url and email.
+    """
 if selected_level == "level 1":
     data = load_data_daily_1()
     total_data = load_data_total_1()
-
+    message = """
+    First pass in cleaning out profiles data. Level 1: low level de-plucation of linkedin_url and email.
+    """
 if selected_level == "level 2":
     data = load_data_daily_2()
     total_data = load_data_total_2()
+    message = """
+    Level 2, a more in-depth cleaning of profiles. higher level de-duplication of linkedin_url, handling supsicious emails, 
+    no name, same name, and other anomalies.
+    """
 
 
 #data = load_data()
@@ -98,9 +106,7 @@ with col3:
     #st.markdown(f"**{formatted_monthly_avg}**", unsafe_allow_html=True)
 
 # add markdown
-st.markdown("""
-Profiles without duplicated linkedin urls, emails, and root_profile_ids
-""")
+st.markdown(message)
 
 # chart 1
 # Create an interactive chart with a rolling average
