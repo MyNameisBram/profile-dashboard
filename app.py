@@ -93,7 +93,7 @@ fig = px.line(monthly_data, x='month_year', y=['profile_id', 'rolling_avg'],
 
 # # Update the color of the rolling average to red
 fig.data[1].line.color = 'red'
-fig.update_layout(xaxis_title="Year", yaxis_title="Profiles", height=400 )
+fig.update_layout(xaxis_title="Year", yaxis_title="Profiles", height=200 )
 st.plotly_chart(fig)
 
 ### --- selected year data and charts --- ###
