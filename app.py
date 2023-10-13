@@ -164,13 +164,13 @@ if selected_level == "level 1":
         st.plotly_chart(fig_daily)
 
     # level 2
-    elif selected_level == "level 2":
-
+if selected_level == "level 2":
+    try:
         file_name = "level_2"
         st.sidebar.markdown("""
         **Level 2**
         """)    
-        
+
         # pull data 
         path = "./data"
         @st.cache_data
