@@ -421,4 +421,4 @@ with col2:
     st.dataframe(annual_p_data)
 
 # print success statement
-st.success("Assessemnt selected: {assessment_selected} --> Done!")
+st.success(f"Assessemnt selected: {assessment_selected} --> Done!")
