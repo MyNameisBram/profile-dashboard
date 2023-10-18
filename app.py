@@ -391,13 +391,31 @@ st.subheader("Personality Data")
 
 # select from assessment type
 assessment = st.selectbox("Select Assessment Type", ["DiSC", "Enneagram", "Myers-Brigg", "Big-Five", "Self-look-up"])
-# filter data
-filtered_p_data = p_data[p_data['source'] == assessment]
-# # group by year
-# filtered_p_data['year'] = filtered_p_data['date'].dt.year
-# filtered_p_data = filtered_p_data.groupby('year')['profile_id'].sum().reset_index()
-# filtered_p_data.rename(columns={'profile_id': 'number of individuals taken assessment'}, inplace=True)
-# # index = year
-# filtered_p_data = filtered_p_data.set_index('year')
-cols = ['date', 'profile_id', 'source']
-st.dataframe(filtered_p_data[cols])
+
+col1, col2 = st.columns(2)
+
+with col1:
+    # filter data
+    st.subheader("Monthly Data")
+    filtered_p_data = p_data[p_data['source'] == assessment]
+    # groupby month_year
+    filtered_p_data['month_year'] = filtered_p_data['date'].dt.to_period('M')
+    # convert month_year to month-year format
+    filtered_p_data['month_year'] = filtered_p_data['month_year'].astype(str)
+
+    filtered_p_data = filtered_p_data.groupby('month_year')['profile_id'].sum().reset_index()
+    #cols = ['date', 'profile_id', 'source']
+    # set month_year as index
+    filtered_p_data.set_index('month_year', inplace=True)
+    st.dataframe(filtered_p_data)
+
+with col2:
+    #annual data
+    st.subheader("Annual Data")
+    annual_p_data = p_data[p_data['source'] == assessment]
+    annual_p_data = annual_p_data.groupby(annual_p_data['date'].dt.year)['profile_id'].sum().reset_index()
+    # convert year to string
+    annual_p_data['date'] = annual_p_data['date'].astype(str)
+    # set index to year
+    annual_p_data.set_index('date', inplace=True)
+    st.dataframe(annual_p_data)
