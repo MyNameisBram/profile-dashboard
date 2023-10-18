@@ -21,6 +21,14 @@ def load_data_total_1():
 def load_data_total_2():
     return pd.read_csv(path+'/level_2_total.csv')
 
+#  load personality data
+@st.cache_data
+def load_personality_total():
+    return pd.read_csv(path+'/personality_total.csv')
+@st.cache_data
+def load_personality_daily():
+    return pd.read_csv(path+'/personality_daily.csv', parse_dates=['date'])
+
 # Sidebar for filtering
 st.sidebar.header("Filter Data")
 # select level data
@@ -108,6 +116,7 @@ with col3:
 # add markdown
 st.markdown(message)
 
+
 # chart 1
 # Create an interactive chart with a rolling average
 data['month_year'] = data['date'].dt.to_period('M')
@@ -185,3 +194,192 @@ st.plotly_chart(fig_daily)
 
 
 
+#### PERSONALITY DATA ####
+# personality data
+st.title("Personality Data")
+st.markdown("""Total number of people who have taken a personality test""")
+
+p_total = load_personality_total()
+DiSC = p_total[p_total['source'] == 'DiSC']['total_profiles'].values[0]
+Enneagram = p_total[p_total['source'] == 'Enneagram']['total_profiles'].values[0]
+MyersBriggs = p_total[p_total['source'] == 'Myers-Brigg']['total_profiles'].values[0]
+BigFive = p_total[p_total['source'] == 'Big-Five']['total_profiles'].values[0]
+Self_look = p_total[p_total['source'] == 'Self-look-up']['total_profiles'].values[0]
+
+
+# Create columns for KPIs
+# Create columns for KPIs
+col1, col2, col3, col4, col5 = st.columns(5)
+
+# Display KPIs in columns with styling
+with col1:
+    st.markdown("**DiSC Assessment**")
+    formatted_disc = f"{DiSC:,}" 
+    st.markdown(f"<div style='font-size: 20px; text-align: left; color: black;'>{formatted_disc}</div>", unsafe_allow_html=True)
+    #st.markdown(f"**{total_profiles}**", unsafe_allow_html=True)
+
+with col2:
+    st.markdown("**Enneagram**")
+    formatted_enne = f"{Enneagram:,.0f}"
+    st.markdown(f"<div style='font-size: 20px; text-align: left; color: black;'>{formatted_enne}</div>", unsafe_allow_html=True)
+    #st.markdown(f"**{formatted_monthly_avg}**", unsafe_allow_html=True)
+
+with col3:
+    st.markdown("**Myers Briggs**")
+    formatted_mb = f"{MyersBriggs:,.0f}"
+    st.markdown(f"<div style='font-size: 20px; text-align: left; color: black;'>{formatted_mb}</div>", unsafe_allow_html=True)
+    #st.markdown(f"**{formatted_monthly_avg}**", unsafe_allow_html=True)
+
+with col4:
+    st.markdown("**Big Five**")
+    formatted_bf = f"{BigFive:,.0f}"
+    st.markdown(f"<div style='font-size: 20px; text-align: left; color: black;'>{formatted_bf}</div>", unsafe_allow_html=True)
+    #st.markdown(f"**{formatted_monthly_avg}**", unsafe_allow_html=True)
+
+with col5:
+    st.markdown("**Self-look-up**")
+    formatted_sl = f"{MyersBriggs:,.0f}"
+    st.markdown(f"<div style='font-size: 20px; text-align: left; color: black;'>{formatted_sl}</div>", unsafe_allow_html=True)
+    #st.markdown(f"**{formatted_monthly_avg}**", unsafe_allow_html=True)
+
+# chart 4
+p_data = load_personality_daily()
+
+# Convert date to month-year format
+p_data['month_year'] = p_data['date'].dt.to_period('M')
+p_data = p_data[p_data['date'] > '2020-03-01'] # change this if needed
+# Group by month_year and source
+grouped = p_data.groupby(['month_year', 'source'])['profile_id'].sum().reset_index()
+# Pivot table to have sources as columns
+pivot_data = grouped.pivot(index='month_year', columns='source', values='profile_id').reset_index()
+# Convert month_year from Period to string
+pivot_data['month_year'] = pivot_data['month_year'].astype(str)
+# Plot
+fig = px.line(pivot_data, x='month_year', y=pivot_data.columns[1:],
+              labels={col: col for col in pivot_data.columns[1:]},
+              title='Monthly Personality Test by Source')
+fig.update_layout(xaxis_title="Year", yaxis_title="# of assessment taken", height=325 )
+
+
+st.plotly_chart(fig)
+
+
+###
+
+
+# data['month_year'] = data['date'].dt.to_period('M')
+# monthly_data = data[data['date'].dt.year > 2018]
+# monthly_data = monthly_data.groupby('month_year')['profile_id'].sum().reset_index()
+# monthly_data['rolling_avg'] = monthly_data['profile_id'].rolling(window=3).mean()
+
+# # Convert month_year from Period to string
+# monthly_data['month_year'] = monthly_data['month_year'].astype(str)
+
+# fig = px.line(monthly_data, x='month_year', y=['profile_id', 'rolling_avg'], 
+#         labels={'profile_id': 'Monthly Profiles', 'rolling_avg': 'Rolling Average'}, 
+#         title='Monthly Profiles with Rolling Average - Total')
+
+# # # Update the color of the rolling average to red
+# fig.data[1].line.color = 'red'
+# fig.update_layout(xaxis_title="Year", yaxis_title="Profiles", height=325 )
+# st.plotly_chart(fig)
+
+
+####
+
+
+# chart 5 - filter by year
+def get_annual(df, selected_year):
+    df = df[(df['date'].dt.year == selected_year)]
+
+    DiSC = df[df['source'] == 'DiSC']['profile_id'].sum()
+    Enneagram = df[df['source'] == 'Enneagram']['profile_id'].sum()
+    MyersBriggs = df[df['source'] == 'Myers-Brigg']['profile_id'].sum()
+    BigFive = df[df['source'] == 'Big-Five']['profile_id'].sum()
+    Self_look = df[df['source'] == 'Self-look-up']['profile_id'].sum()
+
+    return DiSC, Enneagram, MyersBriggs, BigFive, Self_look
+
+def get_monthly(df, selected_year, selected_month):
+    df = df[(df['date'].dt.year == selected_year) & (df['date'].dt.month == selected_month)]
+
+    DiSC = df[df['source'] == 'DiSC']['profile_id'].sum()
+    Enneagram = df[df['source'] == 'Enneagram']['profile_id'].sum()
+    MyersBriggs = df[df['source'] == 'Myers-Brigg']['profile_id'].sum()
+    BigFive = df[df['source'] == 'Big-Five']['profile_id'].sum()
+    Self_look = df[df['source'] == 'Self-look-up']['profile_id'].sum()
+
+    return DiSC, Enneagram, MyersBriggs, BigFive, Self_look
+
+
+# 
+st.subheader(f"Year: {selected_year}")
+DiSC, Enneagram, MyersBriggs, BigFive, Self_look = get_annual(p_data, selected_year)
+col1, col2, col3, col4, col5 = st.columns(5)
+
+# Display KPIs in columns with styling
+with col1:
+    st.markdown("**DiSC Assessment**")
+    formatted_disc = f"{DiSC:,}" 
+    st.markdown(f"<div style='font-size: 20px; text-align: left; color: black;'>{formatted_disc}</div>", unsafe_allow_html=True)
+    #st.markdown(f"**{total_profiles}**", unsafe_allow_html=True)
+
+with col2:
+    st.markdown("**Enneagram**")
+    formatted_enne = f"{Enneagram:,.0f}"
+    st.markdown(f"<div style='font-size: 20px; text-align: left; color: black;'>{formatted_enne}</div>", unsafe_allow_html=True)
+    #st.markdown(f"**{formatted_monthly_avg}**", unsafe_allow_html=True)
+
+with col3:
+    st.markdown("**Myers Briggs**")
+    formatted_mb = f"{MyersBriggs:,.0f}"
+    st.markdown(f"<div style='font-size: 20px; text-align: left; color: black;'>{formatted_mb}</div>", unsafe_allow_html=True)
+    #st.markdown(f"**{formatted_monthly_avg}**", unsafe_allow_html=True)
+
+with col4:
+    st.markdown("**Big Five**")
+    formatted_bf = f"{BigFive:,.0f}"
+    st.markdown(f"<div style='font-size: 20px; text-align: left; color: black;'>{formatted_bf}</div>", unsafe_allow_html=True)
+    #st.markdown(f"**{formatted_monthly_avg}**", unsafe_allow_html=True)
+
+with col5:
+    st.markdown("**Self-look-up**")
+    formatted_sl = f"{MyersBriggs:,.0f}"
+    st.markdown(f"<div style='font-size: 20px; text-align: left; color: black;'>{formatted_sl}</div>", unsafe_allow_html=True)
+    #st.markdown(f"**{formatted_monthly_avg}**", unsafe_allow_html=True)
+
+
+st.subheader(f"Month: {selected_month_str}")
+DiSC, Enneagram, MyersBriggs, BigFive, Self_look = get_monthly(p_data, selected_year, selected_month)
+col1, col2, col3, col4, col5 = st.columns(5)
+
+# Display KPIs in columns with styling
+with col1:
+    st.markdown("**DiSC Assessment**")
+    formatted_disc = f"{DiSC:,}" 
+    st.markdown(f"<div style='font-size: 20px; text-align: left; color: black;'>{formatted_disc}</div>", unsafe_allow_html=True)
+    #st.markdown(f"**{total_profiles}**", unsafe_allow_html=True)
+
+with col2:
+    st.markdown("**Enneagram**")
+    formatted_enne = f"{Enneagram:,.0f}"
+    st.markdown(f"<div style='font-size: 20px; text-align: left; color: black;'>{formatted_enne}</div>", unsafe_allow_html=True)
+    #st.markdown(f"**{formatted_monthly_avg}**", unsafe_allow_html=True)
+
+with col3:
+    st.markdown("**Myers Briggs**")
+    formatted_mb = f"{MyersBriggs:,.0f}"
+    st.markdown(f"<div style='font-size: 20px; text-align: left; color: black;'>{formatted_mb}</div>", unsafe_allow_html=True)
+    #st.markdown(f"**{formatted_monthly_avg}**", unsafe_allow_html=True)
+
+with col4:
+    st.markdown("**Big Five**")
+    formatted_bf = f"{BigFive:,.0f}"
+    st.markdown(f"<div style='font-size: 20px; text-align: left; color: black;'>{formatted_bf}</div>", unsafe_allow_html=True)
+    #st.markdown(f"**{formatted_monthly_avg}**", unsafe_allow_html=True)
+
+with col5:
+    st.markdown("**Self-look-up**")
+    formatted_sl = f"{MyersBriggs:,.0f}"
+    st.markdown(f"<div style='font-size: 20px; text-align: left; color: black;'>{formatted_sl}</div>", unsafe_allow_html=True)
+    #st.markdown(f"**{formatted_monthly_avg}**", unsafe_allow_html=True)
