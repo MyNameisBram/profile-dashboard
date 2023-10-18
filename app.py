@@ -390,14 +390,14 @@ st.subheader("Personality Data")
 #st.dataframe(p_data)
 
 # select from assessment type
-assessment = st.selectbox("Select Assessment Type", ["DiSC", "Enneagram", "Myers-Brigg", "Big-Five", "Self-look-up"])
+assessment_selected = st.selectbox("Select Assessment Type", ["DiSC", "Enneagram", "Myers-Brigg", "Big-Five", "Self-look-up"])
 
 col1, col2 = st.columns(2)
 
 with col1:
     # filter data
     st.subheader("Monthly Data")
-    filtered_p_data = p_data[p_data['source'] == assessment]
+    filtered_p_data = p_data[p_data['source'] == assessment_selected]
     # groupby month_year
     filtered_p_data['month_year'] = filtered_p_data['date'].dt.to_period('M')
     # convert month_year to month-year format
@@ -412,10 +412,13 @@ with col1:
 with col2:
     #annual data
     st.subheader("Annual Data")
-    annual_p_data = p_data[p_data['source'] == assessment]
+    annual_p_data = p_data[p_data['source'] == assessment_selected]
     annual_p_data = annual_p_data.groupby(annual_p_data['date'].dt.year)['profile_id'].sum().reset_index()
     # convert year to string
     annual_p_data['date'] = annual_p_data['date'].astype(str)
     # set index to year
     annual_p_data.set_index('date', inplace=True)
     st.dataframe(annual_p_data)
+
+# print success statement
+st.success("Assessemnt selected: {assessment_selected} --> Done!")
