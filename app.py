@@ -88,7 +88,7 @@ total_unique_profiles_month = filtered_data_month['profile_id'].sum() # monthly 
 # Display KPIs on Streamlit with a prettier layout
 st.title("Unique Profiles Data")
 st.markdown("""
-**Count of unique profiles/people we have in our database**
+**Count of unique profiles/people we have in our database** *(all-time)*
 """)
 
 # Create columns for KPIs
@@ -197,7 +197,7 @@ st.plotly_chart(fig_daily)
 #### PERSONALITY DATA ####
 # personality data
 st.title("Personality Data")
-st.markdown("""Total number of people who have taken a personality test""")
+st.markdown("""Total number of people who have taken a personality test *(all-time)*""")
 
 p_total = load_personality_total()
 DiSC = p_total[p_total['source'] == 'DiSC']['total_profiles'].values[0]
