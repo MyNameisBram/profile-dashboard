@@ -88,7 +88,7 @@ total_unique_profiles_month = filtered_data_month['profile_id'].sum() # monthly 
 # Display KPIs on Streamlit with a prettier layout
 st.title("Unique Profiles Data")
 st.markdown("""
-**Count of unique profiles/people we have in our database** *(all-time)*
+**Count of unique profiles/people we have in our database**
 """)
 
 # Create columns for KPIs
@@ -197,7 +197,7 @@ st.plotly_chart(fig_daily)
 #### PERSONALITY DATA ####
 # personality data
 st.title("Personality Data")
-st.markdown("""Total number of people who have taken a personality test *(all-time)*""")
+st.markdown("""Total number of people who have taken a personality test""")
 
 p_total = load_personality_total()
 DiSC = p_total[p_total['source'] == 'DiSC']['total_profiles'].values[0]
@@ -383,3 +383,21 @@ with col5:
     formatted_sl = f"{MyersBriggs:,.0f}"
     st.markdown(f"<div style='font-size: 20px; text-align: left; color: black;'>{formatted_sl}</div>", unsafe_allow_html=True)
     #st.markdown(f"**{formatted_monthly_avg}**", unsafe_allow_html=True)
+
+
+# display p_data
+st.subheader("Personality Data")
+#st.dataframe(p_data)
+
+# select from assessment type
+assessment = st.selectbox("Select Assessment Type", ["DiSC", "Enneagram", "Myers-Brigg", "Big-Five", "Self-look-up"])
+# filter data
+filtered_p_data = p_data[p_data['source'] == assessment]
+# # group by year
+# filtered_p_data['year'] = filtered_p_data['date'].dt.year
+# filtered_p_data = filtered_p_data.groupby('year')['profile_id'].sum().reset_index()
+# filtered_p_data.rename(columns={'profile_id': 'number of individuals taken assessment'}, inplace=True)
+# # index = year
+# filtered_p_data = filtered_p_data.set_index('year')
+cols = ['date', 'profile_id', 'source']
+st.dataframe(filtered_p_data[cols])
