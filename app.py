@@ -28,6 +28,9 @@ def load_personality_total():
 @st.cache_data
 def load_personality_daily():
     return pd.read_csv(path+'/personality_daily.csv', parse_dates=['date'])
+    
+# set page config
+st.set_page_config(page_title="📊 Unique Profiles")
 
 # Sidebar for filtering
 st.sidebar.header("Filter Data")
