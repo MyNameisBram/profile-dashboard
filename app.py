@@ -3,6 +3,9 @@ import pandas as pd
 from datetime import datetime
 import plotly.express as px
 
+# set page config
+st.set_page_config(page_title="📊 Unique Profiles")
+
 # Load the data
 path = "./data"
 @st.cache_data
@@ -29,8 +32,7 @@ def load_personality_total():
 def load_personality_daily():
     return pd.read_csv(path+'/personality_daily.csv', parse_dates=['date'])
     
-# set page config
-st.set_page_config(page_title="📊 Unique Profiles")
+
 
 # Sidebar for filtering
 st.sidebar.header("Filter Data")
