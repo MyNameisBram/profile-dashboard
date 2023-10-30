@@ -92,8 +92,12 @@ total_unique_profiles_month = filtered_data_month['profile_id'].sum() # monthly 
 
 # Display KPIs on Streamlit with a prettier layout
 st.title("Unique Profiles Data")
+last_update_date = data['date'].max()
+text = f"""
+**Count of unique profiles/people we have in our database** - last updated: {last_update_date}
+"""
 st.markdown("""
-**Count of unique profiles/people we have in our database**
+**Count of unique profiles/people we have in our database** - last updated: 
 """)
 
 # Create columns for KPIs
