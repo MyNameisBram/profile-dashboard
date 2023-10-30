@@ -94,11 +94,9 @@ total_unique_profiles_month = filtered_data_month['profile_id'].sum() # monthly 
 st.title("Unique Profiles Data")
 last_update_date = data['date'].max()
 text = f"""
-**Count of unique profiles/people we have in our database** - last updated: {last_update_date}
+**Count of unique profiles/people we have in our database** -> *last updated: {last_update_date}*
 """
-st.markdown("""
-**Count of unique profiles/people we have in our database** - last updated: 
-""")
+st.markdown(text)
 
 # Create columns for KPIs
 col1, col2, col3 = st.columns([2,1,1])
